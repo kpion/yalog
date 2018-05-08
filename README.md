@@ -7,6 +7,11 @@ Only one file, no dependencies.
 
 You can see the demo here: https://kpion.github.io/yalog
 
+## How it looks like
+
+![It looks like this](https://raw.githubusercontent.com/kpion/yalog/master/yalog-screenshot-1.png)
+
+
 ## Setting it up
 
 ## Node
