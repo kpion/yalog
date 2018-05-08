@@ -1,5 +1,5 @@
 /*
- * YaLog - 
+ * YaLog - colorful logger, featuring cloning and funny cats: https://github.com/kpion/yalog
  */
 (function (global) {
     'use strict';
