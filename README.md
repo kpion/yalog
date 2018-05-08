@@ -2,7 +2,7 @@
 
 A small project which helps me learn and test new things in JS.
 
-A colorful browser console output. Plus (via built in plugin) a DOM console.
+A colorful browser console output. Plus (via built in plugin) a Site (DOM) console.
 Only one file, no dependencies. 
 
 You can see the demo here: https://kpion.github.io/yalog
@@ -20,7 +20,7 @@ Just download the only yalog.js file and:
 ```
 <script src="yalog.js"></script>
 <script>
-yalog.log("works!");
+yalog.log("works!").style('font-size:150%').log('This one too!');
 </script>
 ```
 
