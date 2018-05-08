@@ -177,9 +177,12 @@
                     this.cssSelector(selectorName, selector[selectorName]);
                 });
             }else{
-                //string:
+                //selector is string, so we expect that there will also be a `style`, as an object, or string
                 if(!this._css[selector]){
                     this._css[selector] = {};
+                }
+                if(typeof style === 'string'){
+                    style = this.parseStyle(style);
                 }
                 Object.assign(this._css[selector],style);
             }

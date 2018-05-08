@@ -98,6 +98,9 @@
 			//basic tests
 			yalog.name('default',false);
 			yalog.addPlugin('site');
+                        yalog.cssSelector('banner','margin-bottom:5px;padding:15px 10px;background-color:#1E90FF;border-radius: 5px;font-size:120%;color:white;font-weight:bold');
+                        yalog.css('banner').log("Ya Log");
+                        
 			yalog.log('Normal').style({'font-size':'130%'}).log('big');
 			yalog.css('indent').log('indented').css('indent').log('intended 2');
 			/*
