@@ -440,7 +440,7 @@
         */
         stats(name = null){
             let stats = {
-                total: 0,
+                total: 0, warn: 0, info: 0, error: 0, debug: 0, dir: 0,
                 //the other keys will be created in the loop
             };
             this._story.forEach(storyEntry => {
@@ -717,7 +717,7 @@
         },
 
       {
-            name: 'dom',
+            name: 'site',
             //default params:
             params: {
                 selector: '#yalog-wrapper',
