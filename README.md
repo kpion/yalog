@@ -29,3 +29,9 @@ Will later prepare the .min version and node stuff.
 ## Demo and docs:
 
 You can see the demo here: https://kpion.github.io/yalog
+
+## To do
+
+1. there is smth like window.onerror, need to read about it
+2. working with npm and also with require...
+3. would be great if browsers showed the rght file/line number in the console (i.e. the real .log call occurence, not the yalog one)  
