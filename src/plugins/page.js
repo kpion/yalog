@@ -30,6 +30,7 @@
                 //inserting html into body:
                 let html = document.querySelector('body').appendChild(document.createElement('div'));
                 html.innerHTML = plugin.html;
+                win.scrollTo(0,document.body.scrollHeight);
                 
                 document.querySelector('#yalog-controls-toggle').addEventListener('click',() => {
                     document.querySelector('#yalog-wrapper').classList.toggle('yalog-enabled');
