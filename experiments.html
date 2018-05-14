@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Yalog experiments</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="src/yalog.js"></script>
+    </head>
+    <body>
+        <h1>Experiments</h1>
+        <h2>NOT PART OF YALOG PROJECT (at least yet)</h2>
+        <script>
+            
+            function parseStackLine(line){
+                //this regex doesn't even try to capture funciton name, maybe some day:
+                let parsed = errorLine.match(/^(?:.*?)((http[s]?).*\/(.*?)):(\d+):(\d+)\)?(?:\s*)$/);
+                if(!parsed){
+                    return {full:line, url:null,file:null,line:null,column:null};                    
+                }
+                return {
+                    full:line,
+                    url:parsed[1],
+                    file:parsed[3],
+                    line:parsed[4],
+                    column:parsed[5],
+                };
+            }
+            
+            /*
+            Chrome/Opera stack string:
+
+            at second (http://localhost/yalog/experiments.html:21:31)
+            at first (http://localhost/yalog/experiments.html:17:17)
+            at http://localhost/yalog/experiments.html:28:9  
+
+            FX stack string:
+            second@http://localhost/yalog/experiments.html:24:31
+            first@http://localhost/yalog/experiments.html:20:17
+            @http://localhost/yalog/experiments.html:31:13    
+
+
+            Chrome/opera: with weird file name  - weird@file(eee).html
+
+            at x (http://localhost/tests/yalog/weird@file(eee).html:5:16)
+            at http://localhost/tests/yalog/weird@file(eee).html:7:3            
+             */
+            function parseStack(error){
+               let lines = error.split("\n").filter(el => el !== '' && el !== 'Error').map(el => el.trim()); //lines with trash removed.
+               return lines.map(el => parseErrorStackLine(el));
+            }
+            
+            let counter = 0;
+            /*
+             * 
+             * callee / caller cannot be used in strict mode, so we can't use them.
+             */
+            function first() {
+                
+                second();
+            }
+            function second() {
+                counter++;
+                /*
+                console.dir(error);//in chrome it's emtpy, so nvm
+
+                console.log(error.stack);
+                console.log(typeof error.stack);
+                console.log(error.message);
+                */
+               
+                //works, simple "\n" delimeted string with callers:
+                const error = new Error();//100ms
+                let stackInfo = parseErrorStack(error.stack);//250ms 
+               //console.log(stackInfo);
+            }
+            console.time();
+            
+            for(let n = 0;n < 10000; n++){
+                first('just some arg');
+            }
+            console.log('counter:',counter);
+            console.timeEnd();
+        </script>
+    </body>
+</html>
