@@ -30,6 +30,11 @@
                 //inserting html into body:
                 let html = document.querySelector('body').appendChild(document.createElement('div'));
                 html.innerHTML = plugin.html;
+                
+                document.querySelector('#yalog-controls-toggle').addEventListener('click',() => {
+                    document.querySelector('#yalog-wrapper').classList.toggle('yalog-enabled');
+                    win.scrollTo(0,document.body.scrollHeight);
+                });
             },
             
             run: (yalog, data) => {
@@ -102,7 +107,7 @@
                         height: 45vh;
                         margin-bottom: 30px;
                         display:none;
-                            resize: vertical;
+                        resize: vertical;
                 }
 
                 #yalog-wrapper #yalog-console pre {
@@ -120,7 +125,7 @@
 
 
                 #yalog-wrapper.yalog-enabled #yalog-console{
-                        display:block;
+                        display:block;//it's hidden by default
                 }
                 #yalog-wrapper #yalog-controls {
                         display:flex;
@@ -171,7 +176,7 @@
                 <div id = "yalog-wrapper" class = ''>
                     <div id = 'yalog-console'></div>
                     <div id = 'yalog-controls'>
-                        <span id  = 'yalog-controls-toggle' onclick = "document.querySelector('#yalog-wrapper').classList.toggle('yalog-enabled')">Toggle</span>
+                        <span id  = 'yalog-controls-toggle'>Toggle</span>
                         <div id = 'yalog-stats'>
                             <span id = 'yalog-stats-total' title = 'Total'>0</span>
                             <span id = 'yalog-stats-error' title = 'Errors'>0</span>
@@ -180,6 +185,7 @@
                         </div>	
                     </div>
                 </div>            
+        
             `,
         };
     win.yalogSite = plugin;    
