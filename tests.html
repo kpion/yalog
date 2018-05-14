@@ -5,7 +5,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="src/yalog.js"></script>
-        <script src="src/plugins/site.js"></script>
+        <script src="src/plugins/page.js"></script>
         <style>
             html, body{
                 /*height: 100%;*/
@@ -72,7 +72,7 @@
 
             //basic tests
             yalog.name('default', false);
-            yalog.addPlugin(yalogSite);
+            yalog.addPlugin(yalogPage);
             yalog.cssSelector('banner',`
 				
                 padding:8px 15px;

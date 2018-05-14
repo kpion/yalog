@@ -5,7 +5,7 @@
     let plugin =
         {
             
-            name: 'site',
+            name: 'page',
             //default params:
             params: {
                 selector: '#yalog-wrapper',
@@ -188,5 +188,5 @@
         
             `,
         };
-    win.yalogSite = plugin;    
+    win.yalogPage = plugin;    
 }(window));     
