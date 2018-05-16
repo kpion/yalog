@@ -13,7 +13,7 @@
                 styleIt: true,
                 template:`
                 <div>
-                    <span style = 'float:left;margin-right:10px' title = {htmlTitle}>•</span>
+                    <span style = 'float:left;margin-right:10px' title = '{htmlTitle}'>•</span>
                     <pre style = '{htmlStyle};' >{htmlMessage}</pre>
                 </div>`
             },
