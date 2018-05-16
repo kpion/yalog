@@ -189,5 +189,6 @@
         
             `,
         };
+    //yeah, this has to be done differently.    
     win.yalogPage = plugin;    
 }(window));     
