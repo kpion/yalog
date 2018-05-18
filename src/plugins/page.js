@@ -37,7 +37,26 @@
                     win.scrollTo(0,document.body.scrollHeight);
                 });
             },
-            
+            /*
+                called when user did yalog.clear();
+            */
+            clear: (yalog, data) =>{
+                let wrapperEl = document.querySelector(data.params.selector);
+                let consoleEl = document.querySelector(data.params.selector + ' #yalog-console');
+                consoleEl.innerHTML = '';
+                data.me._updateStats(data,{total:0, error:0, warn:0});
+            },
+
+            //data contains 'me' which points to us, and 'params' 
+            _updateStats: (data, stats) => {
+                let wrapperEl = document.querySelector(data.params.selector);
+                //the (...|| {}) is there so if those elements are missing, nothing horrible will happen:
+                (wrapperEl.querySelector('#yalog-stats-total') || {}).textContent = stats.total;
+                (wrapperEl.querySelector('#yalog-stats-error') || {}).textContent = stats.error;
+                (wrapperEl.querySelector('#yalog-stats-warn') || {}).textContent = stats.warn;
+                (wrapperEl.querySelector('#yalog-stats-other') || {}).textContent = stats.total - (stats.error + stats.warn);
+            },
+
             run: (yalog, data) => {
                 let wrapperEl = document.querySelector(data.params.selector);
                 let consoleEl = document.querySelector(data.params.selector + ' #yalog-console');
@@ -74,12 +93,7 @@
 
                 //stats
                 let stats = yalog.stats();
-                //the (...|| {}) is there so if those elements are missing, nothing horrible will happen:
-                (wrapperEl.querySelector('#yalog-stats-total') || {}).textContent = stats.total;
-                (wrapperEl.querySelector('#yalog-stats-error') || {}).textContent = stats.error;
-                (wrapperEl.querySelector('#yalog-stats-warn') || {}).textContent = stats.warn;
-                (wrapperEl.querySelector('#yalog-stats-other') || {}).textContent = stats.total - (stats.error + stats.warn);
-
+                data.me._updateStats (data, stats);
 
             },
             css : `
@@ -188,6 +202,7 @@
                 </div>            
         
             `,
+
         };
     //yeah, this has to be done differently.    
     win.yalogPage = plugin;    

@@ -266,7 +266,11 @@
             }
             //If there is the `init` method:
             if(typeof plugin.init === 'function'){
-                plugin.init(this);
+                let data = {
+                    me: plugin,//the plugin itself
+                    params: plugin.params,
+                };
+                plugin.init(this, data);
             }
             //insert at start, we really want the 'style' plugin to be the last one. It changes .message to an array
             this.plugins.unshift(plugin);
@@ -340,6 +344,7 @@
         processPlugins(entryData) {
             entryData = JSON.parse(JSON.stringify(entryData));//copy
             this.plugins.forEach((plugin, index) => {
+                entryData.me = plugin;//the plugin itself
                 entryData.params = plugin.params;
                 plugin.run(this, entryData);
                 //we are told to cancel this message.
@@ -395,6 +400,19 @@
                 }
             });
             return this;
+        }
+
+        clear(storyToo = false){
+            console.clear();
+            if(storyToo){
+                this.storyClear();
+            }
+            this.plugins.forEach(plugin => {
+                let data = {me: plugin, params: plugin.params};
+                if(typeof plugin['clear'] === 'function'){
+                    plugin.clear(this,data);
+                }
+            })
         }
 
         /*
@@ -479,6 +497,10 @@
          */
         storyAdd(entryData) {
             this._story.push(entryData);
+        }
+
+        storyClear(){
+            this._story.length = 0;
         }
         /*
          @param list - this.pluginStore or this.plugins
@@ -672,22 +694,26 @@
         /*
          used by parseStack below. 
          example "lines": https://gist.github.com/kpion/1a1b70b1f97e1e604f5421eed5efc54f
-         playing with regex: https://regex101.com/r/U5IkrH/1/
+         playing with regex: 
+         https://regex101.com/r/U5IkrH/1/
+         new: https://regex101.com/r/udTVJ2/3/ 
          */
         parseStackLine(line) {
             //this regex doesn't try to capture function name, maybe some day:
-            let parsed = line.match(/^(?:.*?)((http[s]?).*\/(.*?)):(\d+):(\d+)\)?(?:\s*)$/);
+            //let parsed = line.match(/^(?:.*?)((http[s]?).*\/(.*?)):(\d+):(\d+)\)?(?:\s*)$/);
+            let parsed = line.match(/^(?:.*?)(http[s]?):\/\/(?:[^ \/]+\/)*([^ \/:]+\/?):(\d+):(\d+)\)?(?:\s*)$/);
             if (!parsed) {
                 //return {full:line, url:null,file:null,line:null,column:null};                    
-                return null;//this is probably chrome's attempt to show some anonymous func call.
+                return null;//this is probably chrome's attempt to show some anonymous func call. And I'm pretty bad at regex:)
             }
-            return {
+            let result = {
                 full: line,
                 url: parsed[1], //eg. http://example.com/test/index.html
-                file: parsed[3], //only file name eg. index.html
-                line: parsed[4],
-                column: parsed[5],
+                file: parsed[2], //only file name eg. index.html
+                line: parsed[3],
+                column: parsed[4],
             };
+            return result;
         }
 
         //parses the content of new Error().stack to an array of objects: {url:http://example.com/test/index.html, line:100} ;
@@ -705,8 +731,8 @@
     //prototype stuff.
 
     ['trace', 'log', 'debug', 'info', 'warn', 'error', 'dir',
-        'group', 'groupCollapsed', 'groupEnd', 'time', 'timeEnd',
-        'clear'
+        'group', 'groupCollapsed', 'groupEnd', 'time', 'timeEnd'
+        //'clear' we have our own implementation of that
     ].forEach(func => {
         YaLog.prototype[func] = function () {
             return this.process(func, ...arguments);
